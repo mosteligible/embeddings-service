@@ -4,7 +4,7 @@ docker-image:
 docker-run:
 	docker run -it --rm \
 		-p 8000:8000 \
-		--env .env \
+		--env-file .env \
 		embedding-srv:0.1.0
 
 remove-images:
