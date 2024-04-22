@@ -1,0 +1,22 @@
+name: embedding-gp-srv
+
+on:
+  push:
+    branches: ["**"]
+
+env:
+  DOCKER_USERNAME:${{secrets.DOCKER_USER}}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build docker image
+        run: make docker-image
+
+      - name: Push to registry
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo ${{secrets.DOCKER_TOKEN}} | docker login -u ${{secrets.DOCKER_USER}} --password-stdin
+          docker push ${{secrets.DOCKER_USER}}/embedding-srv:0.1.0
